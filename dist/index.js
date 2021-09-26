@@ -8435,10 +8435,12 @@ const events = __nccwpck_require__(8370);
         repo,
     } = context.repo;
 
-    const milestones = await octokit.paginate(octokit.rest.issues.listMilestones({
+    // pagination is not possible :/ https://github.com/octokit/rest.js/issues/33
+    const milestones = (await octokit.rest.issues.listMilestones({
         owner,
         repo,
-    }));
+        per_page: 100,
+    })).data;
 
     core.info(JSON.stringify(milestones));
 
