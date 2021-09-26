@@ -8438,7 +8438,7 @@ const events = __nccwpck_require__(8370);
     const milestones = await octokit.rest.issues.listMilestones({
         owner,
         repo,
-    });
+    }).data;
 
     core.info(JSON.stringify(milestones));
 
