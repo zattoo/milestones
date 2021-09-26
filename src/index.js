@@ -38,11 +38,13 @@ const events = require('./events');
         repo,
     }));
 
-    core.info(milestones);
+    core.info(JSON.stringify(milestones));
 
     const milestoneInfo = milestones.find(({title}) => {
         return title === milestone;
     });
+
+    core.info(JSON.stringify(context));
 
     switch (context.eventName) {
         case events.CREATE_MILESTONE: {
@@ -124,7 +126,7 @@ const events = require('./events');
         }
 
         default: {
-            throw new Error(`Unknown event no handler found for ${context.eventName}\nsupported events are ${Object.entries(events).join()}`);
+            throw new Error(`Unknown event no handler found for ${context.eventName}\nsupported events are ${Object.values(events).join()}`);
         }
     }
 })().catch((error) => {
