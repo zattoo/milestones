@@ -50,7 +50,7 @@ const events = require('./events');
     switch (context.payload.action) {
         case events.CREATE_MILESTONE: {
             if (milestoneInfo) {
-                throw new Error(`can't create milestone, ${milestone} version already exists`);
+                throw new Error(`Can't create milestone, ${milestone} version already exists`);
             }
 
             const due_on = getDueOn(core.getInput('due_on', {required: false}));
@@ -69,7 +69,7 @@ const events = require('./events');
 
         case events.CLOSE_MILESTONE: {
             if (!milestoneInfo) {
-                throw new Error(`can't close milestone, ${milestone} version does not exists`);
+                throw new Error(`Can't close milestone, ${milestone} version does not exists`);
             }
 
             await octokit.rest.issues.updateMilestone({
@@ -88,13 +88,13 @@ const events = require('./events');
 
         case events.ASSIGN_MILESTONE: {
             if (!milestoneInfo) {
-                throw new Error(`can't assign milestone to pull-request, ${milestone} version does not exists`);
+                throw new Error(`Can't assign milestone to pull-request, ${milestone} version does not exists`);
             }
 
             const issue = core.getInput('issue', {required: false});
 
             if (!issue) {
-                throw new Error(`can't assign milestone to pull-request, issue parameter is missing`);
+                throw new Error(`Can't assign milestone to pull-request, issue parameter is missing`);
             }
 
             // see https://docs.github.com/en/github/searching-for-information-on-github/searching-on-github/searching-issues-and-pull-requests
@@ -104,7 +104,7 @@ const events = require('./events');
             const pull_requests = (await octokit.rest.search.issuesAndPullRequests({q})).data;
 
             if (!pull_requests) {
-                throw new Error(`can't assign milestone to pull-request, no pull-request found matching ${issue} in the title`);
+                throw new Error(`Can't assign milestone to pull-request, no pull-request found matching ${issue} in the title`);
             }
 
             let urls = [];
