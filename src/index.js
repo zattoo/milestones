@@ -40,6 +40,9 @@ const events = require('./events');
         per_page: 100,
     })).data;
 
+    core.info(JSON.stringify(milestones));
+    core.info(milestone);
+
     const milestoneInfo = milestones.find(({title}) => {
         return title === milestone;
     });
