@@ -46,7 +46,7 @@ const events = require('./events');
 
     core.info(JSON.stringify(context));
 
-    switch (context.eventName) {
+    switch (context.payload.action) {
         case events.CREATE_MILESTONE: {
             if (milestoneInfo) {
                 throw new Error(`can't create milestone, ${milestone} version already exists`);

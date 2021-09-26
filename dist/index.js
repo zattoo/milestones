@@ -8448,7 +8448,7 @@ const events = __nccwpck_require__(8370);
 
     core.info(JSON.stringify(context));
 
-    switch (context.eventName) {
+    switch (context.payload.action) {
         case events.CREATE_MILESTONE: {
             if (milestoneInfo) {
                 throw new Error(`can't create milestone, ${milestone} version already exists`);
