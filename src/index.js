@@ -33,18 +33,16 @@ const events = require('./events');
         repo,
     } = context.repo;
 
-    const milestones = await octokit.paginate(octokit.rest.issues.listMilestones({
+    const milestones = await octokit.rest.issues.listMilestones({
         owner,
         repo,
-    }));
+    });
 
     core.info(JSON.stringify(milestones));
 
     const milestoneInfo = milestones.find(({title}) => {
         return title === milestone;
     });
-
-    core.info(JSON.stringify(context));
 
     switch (context.payload.action) {
         case events.CREATE_MILESTONE: {
