@@ -101,8 +101,7 @@ const events = require('./events');
             const q = `${issue} is:pr in:title repo:${owner}/${repo}`;
 
 
-            const pull_requests = (await octokit.rest.search.issuesAndPullRequests({q}));
-            console.log(pull_requests);
+            const pull_requests = (await octokit.rest.search.issuesAndPullRequests({q})).data.items;
 
             if (!pull_requests) {
                 throw new Error(`Can't assign milestone to pull-request, no pull-request found matching ${issue} in the title`);
@@ -110,7 +109,7 @@ const events = require('./events');
 
             let urls = [];
 
-            const queue = pull_requests.data.map(async (pull_request) => {
+            const queue = pull_requests.map(async (pull_request) => {
                 urls.push(pull_request.html_url);
 
                 return octokit.rest.issues.update({
