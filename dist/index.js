@@ -8518,7 +8518,7 @@ const events = __nccwpck_require__(8370);
                     owner,
                     repo,
                     issue_number: pull_request.number,
-                    milestone: milestone,
+                    milestone: milestoneInfo.number,
                 });
             });
 

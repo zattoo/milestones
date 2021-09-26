@@ -116,7 +116,7 @@ const events = require('./events');
                     owner,
                     repo,
                     issue_number: pull_request.number,
-                    milestone: milestone,
+                    milestone: milestoneInfo.number,
                 });
             });
 
