@@ -33,10 +33,10 @@ const events = require('./events');
         repo,
     } = context.repo;
 
-    const milestones = await octokit.rest.issues.listMilestones({
+    const milestones = (await octokit.rest.issues.listMilestones({
         owner,
         repo,
-    }).data;
+    })).data;
 
     core.info(JSON.stringify(milestones));
 
