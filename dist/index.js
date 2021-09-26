@@ -8427,7 +8427,7 @@ const events = __nccwpck_require__(8370);
     };
 
     const token = core.getInput('token', {required: true});
-    const milestone = core.getInput('milestone', {required: true});
+    const milestone = core.getInput('milestone', {required: true}).split(',')[0];
     const octokit = getOctokit(token);
 
     const {
@@ -8441,8 +8441,6 @@ const events = __nccwpck_require__(8370);
         repo,
         per_page: 100,
     })).data;
-
-    core.info(JSON.stringify(milestones));
 
     const milestoneInfo = milestones.find(({title}) => {
         return title === milestone;
