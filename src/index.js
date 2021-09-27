@@ -38,9 +38,6 @@ const events = require('./events');
         repo,
     });
 
-    core.info(JSON.stringify(milestones));
-    core.info(milestone);
-
     const milestoneInfo = milestones.find(({title}) => {
         return title === milestone;
     });
