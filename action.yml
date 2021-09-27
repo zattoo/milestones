@@ -5,16 +5,16 @@ inputs:
     description: 'GitHub token'
     required: true
   milestone:
-    description: 'milestone title'
+    description: 'Milestone title'
     required: true
-  issue:
-    description: 'issue to search for on pull-request titles'
-    required: false
   due_on:
-    description: 'the date which the milestone shall be due on'
+    description: 'The date which the milestone shall be due on'
     required: false
   description:
-    description: 'description of the milestone'
+    description: 'Description of the milestone'
+    required: false
+  issue:
+    description: 'Issue to search for on pull-request titles'
     required: false
 runs:
   using: 'node12'

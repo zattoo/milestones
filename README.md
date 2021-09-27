@@ -1,116 +1,139 @@
-# Create a JavaScript Action
+# Milestones
 
-<p align="center">
-  <a href="https://github.com/actions/javascript-action/actions"><img alt="javscript-action status" src="https://github.com/actions/javascript-action/workflows/units-test/badge.svg"></a>
-</p>
-
-Use this template to bootstrap the creation of a JavaScript action.:rocket:
-
-This template includes tests, linting, a validation workflow, publishing, and versioning guidance.
-
-If you are new, there's also a simpler introduction.  See the [Hello World JavaScript Action](https://github.com/actions/hello-world-javascript-action)
-
-## Create an action from this template
-
-Click the `Use this Template` and provide the new repo details for your action
-
-## Code in Main
-
-Install the dependencies
-
-```bash
-npm install
-```
-
-Run the tests :heavy_check_mark:
-
-```bash
-$ npm test
-
- PASS  ./index.test.js
-  ✓ throws invalid number (3ms)
-  ✓ wait 500 ms (504ms)
-  ✓ test runs (95ms)
-...
-```
-
-## Change action.yml
-
-The action.yml defines the inputs and output for your action.
-
-Update the action.yml with your name, description, inputs and outputs for your action.
-
-See the [documentation](https://help.github.com/en/articles/metadata-syntax-for-github-actions)
-
-## Change the Code
-
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-const core = require('@actions/core');
-...
-
-async function run() {
-  try {
-      ...
-  }
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
-```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
-
-## Package for distribution
-
-GitHub Actions will run the entry point from the action.yml. Packaging assembles the code into one file that can be checked in to Git, enabling fast and reliable execution and preventing the need to check in node_modules.
-
-Actions are run from GitHub repos.  Packaging the action will create a packaged action in the dist folder.
-
-Run prepare
-
-```bash
-npm run prepare
-```
-
-Since the packaged index.js is run from the dist folder.
-
-```bash
-git add dist
-```
-
-## Create a release branch
-
-Users shouldn't consume the action from master since that would be latest code and actions can break compatibility between major versions.
-
-Checkin to the v1 release branch
-
-```bash
-git checkout -b v1
-git commit -a -m "v1 release"
-```
-
-```bash
-git push origin v1
-```
-
-Note: We recommend using the `--license` option for ncc, which will create a license file for all of the production node modules used in your project.
-
-Your action is now published! :rocket:
-
-See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
+Managing milestones: create, close and assign to pull-request
 
 ## Usage
 
-You can now consume the action by referencing the v1 branch
+This action is designed to be triggered on `repository_dispatch` events [⧉](https://docs.github.com/en/actions/learn-github-actions/events-that-trigger-workflows#repository_dispatch)
+and supports multiple events. It is not required to support all the events, each one of them can be used as a standalone.
 
-```yaml
-uses: actions/javascript-action@v1
-with:
-  milliseconds: 1000
+```yml
+name: Milestones
+
+on:
+  repository_dispatch:
+    types:
+      - create_milestone
+      - update_milestone
+      - assign_milestone
+      - close_milestone
+
+jobs:
+  milestones:
+    name: milestones
+    runs-on: ubuntu-latest
+    steps:
+      - uses: zattoo/milestones@v1
+        with:
+          token: ${{github.token}}
+          milestone: ${{github.event.client_payload.milestone}}
+          description: ${{github.event.client_payload.description}}
+          due_on: ${{github.event.client_payload.due_on}}
+          issue: ${{github.event.client_payload.issue}}
 ```
 
-See the [actions tab](https://github.com/actions/javascript-action/actions) for runs of this action! :rocket:
+The workflow file have to be committed to the `main` branch before it can be triggered
+
+
+## Inputs
+
+
+| Parameter     | Type      |      Description      |  Required  |
+|---------------|:---------:|:---------------------:|:----------:|
+| `token`       | `string`  | GitHub token          | `true`     |
+| `milestone`   | `string`  | Milestone title       | `true`     |
+| `description` | `string`  | Description of the milestone | `false` |
+| `deu_on`      | `date as string` | The date which the milestone shall be due on | `false` |
+| `issue`       | `string`  | Issue to search for on pull-request titles | `false` |
+
+## Events
+
+Events can be triggered by web requests to `/repos/{owner}/{repo}/dispatches` using the `POST` method. [read more](https://docs.github.com/en/rest/reference/repos#create-a-repository-dispatch-event)
+
+### `assign_milestone`
+
+Used to assign a milestone to a pull-request.
+The action will search for pull-request which includes the issue in their title.
+We suggest to use [zattoo/issuer](https://github.com/zattoo/issuer) for validation.
+
+#### Parameters
+- `milestone` (required)
+- `issuer` (required)
+
+#### Code example for web request
+
+```json
+{
+    "event_type": "assign_milestone",
+    "client_payload": {
+        "milestone": "{{issue.fixVersions.name}}",
+        "issue": "{{issue.key}}"
+    }
+}
+```
+
+### `create_milestone`
+
+Used to create a milestone
+
+#### Parameters
+
+- `milestone` (required)
+- `description` (optional)
+- `due_on` (optional)
+
+#### Code example for web request
+
+```json
+{
+    "event_type": "create_milestone",
+    "client_payload": {
+        "milestone": "{{version.name}}",
+        "description": "{{version.description}}",
+        "due_on": "{{version.releaseDate}}"
+    }
+}
+```
+
+
+### `close_milestone`
+
+Used to close a milestone
+
+#### Parameters
+
+- `milestone` (required)
+
+#### Code example for web request
+
+```json
+{
+  "event_type": "close_milestone",
+  "client_payload": {
+    "milestone": "{{version.name}}"
+  }
+}
+```
+
+### `update_milestone`
+
+Used to update a milestone
+
+#### Parameters
+
+- `milestone` (required)
+- `description` (optional)
+- `due_on` (optional)
+
+#### Code example for web request
+
+```json
+{
+    "event_type": "update_milestone",
+    "client_payload": {
+        "milestone": "{{version.name}}",
+        "description": "{{version.description}}",
+        "due_on": "{{version.releaseDate}}"
+    }
+}
+```
