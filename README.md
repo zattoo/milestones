@@ -39,7 +39,7 @@ The workflow file have to be committed to the `main` branch before it can be tri
 
 
 | Parameter     | Type      |      Description      |  Required  |
-|---------------|:---------:|:---------------------:|:----------:|
+|---------------|:---------:|---------------------|:----------:|
 | `token`       | `string`  | GitHub token          | `true`     |
 | `milestone`   | `string`  | Milestone title       | `true`     |
 | `description` | `string`  | Description of the milestone | `false` |
