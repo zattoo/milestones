@@ -8435,12 +8435,10 @@ const events = __nccwpck_require__(8370);
         repo,
     } = context.repo;
 
-    // pagination is not possible :/ https://github.com/octokit/rest.js/issues/33
-    const milestones = (await octokit.rest.issues.listMilestones({
+    const milestones = await octokit.paginate(octokit.rest.issues.listMilestones, {
         owner,
         repo,
-        per_page: 100,
-    })).data;
+    });
 
     core.info(JSON.stringify(milestones));
     core.info(milestone);
@@ -8478,13 +8476,36 @@ const events = __nccwpck_require__(8370);
                 owner,
                 repo,
                 milestone_number: milestoneInfo.number,
+                state: 'closed',
             });
 
             break;
         }
 
         case events.UPDATE_MILESTONE: {
-            core.info('TBD');
+            if (!milestoneInfo) {
+                throw new Error(`Can't update milestone, ${milestone} version does not exists`);
+            }
+
+            const due_on = getDueOn(core.getInput('due_on', {required: false}));
+            const description = core.getInput('description', {required: false});
+
+            if(
+                (description === milestoneInfo.description) ||
+                (due_on === milestoneInfo.due_on)
+            ) {
+                core.info('Description or due on fields didn\'t changed, do nothing');
+                process.exit(0);
+            }
+
+            await octokit.rest.issues.updateMilestone({
+                owner,
+                repo,
+                milestone_number: milestoneInfo.number,
+                description,
+                due_on,
+            });
+
             break;
         }
 
