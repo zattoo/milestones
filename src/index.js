@@ -88,13 +88,13 @@ const events = require('./events');
             const due_on = getDueOn(core.getInput('due_on', {required: false}));
             const description = core.getInput('description', {required: false});
 
-            if(
-                (description === milestoneInfo.description) ||
-                (due_on === milestoneInfo.due_on)
-            ) {
-                core.info('Description or due on fields didn\'t changed, do nothing');
-                process.exit(0);
-            }
+            // if(
+            //     (description === milestoneInfo.description) ||
+            //     (due_on === milestoneInfo.due_on)
+            // ) {
+            //     core.info('Description or due on fields didn\'t changed, do nothing');
+            //     process.exit(0);
+            // }
 
             await octokit.rest.issues.updateMilestone({
                 owner,
