@@ -8483,9 +8483,9 @@ const events = __nccwpck_require__(8370);
         }
 
         case events.UPDATE_MILESTONE: {
-            if (!milestoneInfo) {
-                throw new Error(`Can't update milestone, ${milestone} version does not exists`);
-            }
+            // if (!milestoneInfo) {
+            //     throw new Error(`Can't update milestone, ${milestone} version does not exists`);
+            // }
 
             const due_on = getDueOn(core.getInput('due_on', {required: false}));
             const description = core.getInput('description', {required: false});

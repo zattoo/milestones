@@ -81,9 +81,9 @@ const events = require('./events');
         }
 
         case events.UPDATE_MILESTONE: {
-            if (!milestoneInfo) {
-                throw new Error(`Can't update milestone, ${milestone} version does not exists`);
-            }
+            // if (!milestoneInfo) {
+            //     throw new Error(`Can't update milestone, ${milestone} version does not exists`);
+            // }
 
             const due_on = getDueOn(core.getInput('due_on', {required: false}));
             const description = core.getInput('description', {required: false});
