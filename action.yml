@@ -1,4 +1,4 @@
-name: 'Milestones'
+name: 'Milestones-managment'
 description: 'Managing milestones: create, close and assign pull-request'
 inputs:
   token:
