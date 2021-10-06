@@ -13,10 +13,10 @@ name: Milestones
 on:
   repository_dispatch:
     types:
-      - create_milestone
-      - update_milestone
-      - assign_milestone
-      - close_milestone
+      - milestones_assign
+      - milestones_create
+      - milestones_close
+      - milestones_update
 
 jobs:
   milestones:
@@ -50,7 +50,7 @@ The workflow file have to be committed to the `main` branch before it can be tri
 
 Events can be triggered by web requests to `/repos/{owner}/{repo}/dispatches` using the `POST` method. [read more](https://docs.github.com/en/rest/reference/repos#create-a-repository-dispatch-event)
 
-### `assign_milestone`
+### `milestones_assign`
 
 Used to assign a milestone to a pull-request.
 The action will search for pull-request which includes the issue in their title.
@@ -72,7 +72,7 @@ We suggest to use [zattoo/issuer](https://github.com/zattoo/issuer) for validati
 }
 ```
 
-### `create_milestone`
+### `milestones_create`
 
 Used to create a milestone
 
@@ -96,7 +96,7 @@ Used to create a milestone
 ```
 
 
-### `close_milestone`
+### `milestones_close`
 
 Used to close a milestone
 
@@ -115,7 +115,7 @@ Used to close a milestone
 }
 ```
 
-### `update_milestone`
+### `milestones_update`
 
 Used to update a milestone
 

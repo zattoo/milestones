@@ -43,7 +43,7 @@ const events = require('./events');
     });
 
     switch (context.payload.action) {
-        case events.CREATE_MILESTONE: {
+        case events.MILESTONES_CREATE: {
             if (milestoneInfo) {
                 throw new Error(`Can't create milestone, ${milestone} version already exists`);
             }
@@ -62,7 +62,7 @@ const events = require('./events');
             break;
         }
 
-        case events.CLOSE_MILESTONE: {
+        case events.MILESTONES_CLOSE: {
             if (!milestoneInfo) {
                 throw new Error(`Can't close milestone, ${milestone} version does not exists`);
             }
@@ -77,7 +77,7 @@ const events = require('./events');
             break;
         }
 
-        case events.UPDATE_MILESTONE: {
+        case events.MILESTONES_UPDATE: {
             if (!milestoneInfo) {
                 throw new Error(`Can't update milestone, ${milestone} version does not exists`);
             }
@@ -104,7 +104,7 @@ const events = require('./events');
             break;
         }
 
-        case events.ASSIGN_MILESTONE: {
+        case events.MILESTONES_ASSIGN: {
             if (!milestoneInfo) {
                 throw new Error(`Can't assign milestone to pull-request, ${milestone} version does not exists`);
             }
@@ -150,5 +150,4 @@ const events = require('./events');
     }
 })().catch((error) => {
   core.setFailed(error);
-  process.exit(1);
 });

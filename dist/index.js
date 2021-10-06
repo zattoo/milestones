@@ -8216,16 +8216,16 @@ function wrappy (fn, cb) {
 /***/ 8370:
 /***/ ((module) => {
 
-const ASSIGN_MILESTONE = 'assign_milestone';
-const CREATE_MILESTONE = 'create_milestone';
-const CLOSE_MILESTONE  = 'close_milestone';
-const UPDATE_MILESTONE = 'update_milestone';
+const MILESTONES_ASSIGN = 'milestones_assign';
+const MILESTONES_CREATE = 'milestones_create';
+const MILESTONES_CLOSE  = 'milestones_close';
+const MILESTONES_UPDATE = 'milestones_update';
 
 module.exports = {
-    CREATE_MILESTONE,
-    UPDATE_MILESTONE,
-    ASSIGN_MILESTONE,
-    CLOSE_MILESTONE,
+    MILESTONES_CREATE,
+    MILESTONES_UPDATE,
+    MILESTONES_ASSIGN,
+    MILESTONES_CLOSE,
 };
 
 
@@ -8440,15 +8440,12 @@ const events = __nccwpck_require__(8370);
         repo,
     });
 
-    core.info(JSON.stringify(milestones));
-    core.info(milestone);
-
     const milestoneInfo = milestones.find(({title}) => {
         return title === milestone;
     });
 
     switch (context.payload.action) {
-        case events.CREATE_MILESTONE: {
+        case events.MILESTONES_CREATE: {
             if (milestoneInfo) {
                 throw new Error(`Can't create milestone, ${milestone} version already exists`);
             }
@@ -8467,7 +8464,7 @@ const events = __nccwpck_require__(8370);
             break;
         }
 
-        case events.CLOSE_MILESTONE: {
+        case events.MILESTONES_CLOSE: {
             if (!milestoneInfo) {
                 throw new Error(`Can't close milestone, ${milestone} version does not exists`);
             }
@@ -8482,7 +8479,7 @@ const events = __nccwpck_require__(8370);
             break;
         }
 
-        case events.UPDATE_MILESTONE: {
+        case events.MILESTONES_UPDATE: {
             if (!milestoneInfo) {
                 throw new Error(`Can't update milestone, ${milestone} version does not exists`);
             }
@@ -8509,7 +8506,7 @@ const events = __nccwpck_require__(8370);
             break;
         }
 
-        case events.ASSIGN_MILESTONE: {
+        case events.MILESTONES_ASSIGN: {
             if (!milestoneInfo) {
                 throw new Error(`Can't assign milestone to pull-request, ${milestone} version does not exists`);
             }
@@ -8555,7 +8552,6 @@ const events = __nccwpck_require__(8370);
     }
 })().catch((error) => {
   core.setFailed(error);
-  process.exit(1);
 });
 
 })();

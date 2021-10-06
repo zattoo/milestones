@@ -1,11 +1,11 @@
-const ASSIGN_MILESTONE = 'assign_milestone';
-const CREATE_MILESTONE = 'create_milestone';
-const CLOSE_MILESTONE  = 'close_milestone';
-const UPDATE_MILESTONE = 'update_milestone';
+const MILESTONES_ASSIGN = 'milestones_assign';
+const MILESTONES_CREATE = 'milestones_create';
+const MILESTONES_CLOSE  = 'milestones_close';
+const MILESTONES_UPDATE = 'milestones_update';
 
 module.exports = {
-    CREATE_MILESTONE,
-    UPDATE_MILESTONE,
-    ASSIGN_MILESTONE,
-    CLOSE_MILESTONE,
+    MILESTONES_CREATE,
+    MILESTONES_UPDATE,
+    MILESTONES_ASSIGN,
+    MILESTONES_CLOSE,
 };
