@@ -43,7 +43,7 @@ The workflow file have to be committed to the `main` branch before it can be tri
 | `token`       | `string`  | GitHub token          | `true`     |
 | `milestone`   | `string`  | Milestone title       | `true`     |
 | `description` | `string`  | Description of the milestone | `false` |
-| `deu_on`      | `date as string` | The date which the milestone shall be due on | `false` |
+| `due_on`      | `date as string` | The date which the milestone shall be due on | `false` |
 | `issue`       | `string`  | Issue to search for on pull-requests title | `false` |
 
 ## Events
