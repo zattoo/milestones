@@ -1,35 +1,36 @@
 {
-  "name": "javascript-action",
-  "version": "1.0.0",
-  "description": "JavaScript Action Template",
-  "main": "index.js",
-  "scripts": {
-    "lint": "eslint .",
-    "prepare": "ncc build index.js -o dist --source-map --license licenses.txt",
-    "test": "jest",
-    "all": "npm run lint && npm run prepare && npm run test"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/actions/javascript-action.git"
-  },
-  "keywords": [
-    "GitHub",
-    "Actions",
-    "JavaScript"
-  ],
-  "author": "",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/actions/javascript-action/issues"
-  },
-  "homepage": "https://github.com/actions/javascript-action#readme",
-  "dependencies": {
-    "@actions/core": "^1.2.5"
-  },
-  "devDependencies": {
-    "@vercel/ncc": "^0.27.0",
-    "eslint": "^7.4.0",
-    "jest": "^26.6.3"
-  }
+    "name": "milestones",
+    "version": "1.0.0",
+    "description": "Managing milestones: create, close and assign to pull-request",
+    "main": "src/index.js",
+    "scripts": {
+        "lint": "eslint .",
+        "build": "ncc build src/index.js -o dist --source-map --license licenses.txt",
+        "all": "npm run lint && npm run build"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/actions/milestones.git"
+    },
+    "keywords": [
+        "GitHub",
+        "Milestones"
+    ],
+    "author": {
+        "name": "Nitzan Nashi",
+        "url": "https://github.com/nitzanashi"
+    },
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/actions/milestones/issues"
+    },
+    "homepage": "https://github.com/actions/milestones#readme",
+    "dependencies": {
+        "@actions/core": "1.5.0",
+        "@actions/github": "5.0.0"
+    },
+    "devDependencies": {
+        "@vercel/ncc": "0.31.0",
+        "eslint": "7.32.0"
+    }
 }

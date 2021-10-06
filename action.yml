@@ -1,13 +1,24 @@
-name: 'Wait'
-description: 'Wait a designated number of milliseconds'
+name: 'Milestones'
+description: 'Managing milestones: create, close and assign pull-request'
 inputs:
-  milliseconds:  # id of input
-    description: 'number of milliseconds to wait'
+  token:
+    description: 'GitHub token'
     required: true
-    default: '1000'
-outputs:
-  time: # output will be available to future steps
-    description: 'The message to output'
+  milestone:
+    description: 'Milestone title'
+    required: true
+  due_on:
+    description: 'The date which the milestone shall be due on'
+    required: false
+  description:
+    description: 'Description of the milestone'
+    required: false
+  issue:
+    description: 'Issue to search for on pull-requests title'
+    required: false
 runs:
   using: 'node12'
   main: 'dist/index.js'
+branding:
+  icon: map
+  color: purple
