@@ -8440,9 +8440,13 @@ const events = __nccwpck_require__(8370);
         repo,
     });
 
+    console.log(JSON.stringify(milestones));
+
     const milestoneInfo = milestones.find(({title}) => {
         return title === milestone;
     });
+
+    console.log(JSON.stringify(milestoneInfo));
 
     switch (context.payload.action) {
         case events.MILESTONES_CREATE: {
@@ -8469,12 +8473,16 @@ const events = __nccwpck_require__(8370);
                 throw new Error(`Can't close milestone, ${milestone} version does not exists`);
             }
 
-            await octokit.rest.issues.updateMilestone({
+            const response = await octokit.rest.issues.updateMilestone({
                 owner,
                 repo,
                 milestone_number: milestoneInfo.number,
                 state: 'closed',
             });
+
+            console.log(JSON.stringify(response));
+
+            console.log(`Milestone ${milestoneInfo.title} closed!`);
 
             break;
         }
