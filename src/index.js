@@ -25,7 +25,11 @@ const events = require('./events');
     };
 
     const token = core.getInput('token', {required: true});
-    const milestone = core.getInput('milestone', {required: true}).split(',')[0];
+    let milestone = core.getInput('milestone', {required: false});
+    if (milestone) {
+        milestone = milestone.split(',')[0];
+    }
+
     const octokit = getOctokit(token);
 
     const {
@@ -38,9 +42,10 @@ const events = require('./events');
         repo,
     });
 
-    const milestoneInfo = milestones.find(({title}) => {
+    /** @type {MilestoneInfo} */
+    const milestoneInfo = milestone ? milestones.find(({title}) => {
         return title === milestone;
-    });
+    }) : undefined;
 
     switch (context.payload.action) {
         case events.MILESTONES_CREATE: {
@@ -105,36 +110,29 @@ const events = require('./events');
         }
 
         case events.MILESTONES_ASSIGN: {
-            if (!milestoneInfo) {
-                throw new Error(`Can't assign milestone to pull-request, ${milestone} version does not exists`);
-            }
+            // null will remove the already assigned milestone
+            const newMilestone = milestoneInfo ? milestoneInfo.number : null;
 
-            const issue = core.getInput('issue', {required: false});
-
-            if (!issue) {
-                throw new Error(`Can't assign milestone to pull-request, issue parameter is missing`);
-            }
-
+            const issue = core.getInput('issue', {required: true});
             // see https://docs.github.com/en/github/searching-for-information-on-github/searching-on-github/searching-issues-and-pull-requests
             const q = `${issue} is:pr in:title repo:${owner}/${repo}`;
 
+            const pullRequests = (await octokit.rest.search.issuesAndPullRequests({q})).data.items;
 
-            const pull_requests = (await octokit.rest.search.issuesAndPullRequests({q})).data.items;
-
-            if (!pull_requests) {
+            if (!pullRequests) {
                 throw new Error(`Can't assign milestone to pull-request, no pull-request found matching ${issue} in the title`);
             }
 
             let urls = [];
 
-            const queue = pull_requests.map(async (pull_request) => {
+            const queue = pullRequests.map(async (pull_request) => {
                 urls.push(pull_request.html_url);
 
                 return octokit.rest.issues.update({
                     owner,
                     repo,
                     issue_number: pull_request.number,
-                    milestone: milestoneInfo.number,
+                    milestone: newMilestone,
                 });
             });
 
@@ -151,3 +149,10 @@ const events = require('./events');
 })().catch((error) => {
   core.setFailed(error);
 });
+
+/**
+ * @typedef {Object} MilestoneInfo
+ * @prop {string} description
+ * @prop {string} due_on
+ * @prop {number} number
+ */
