@@ -1,6 +1,6 @@
 {
     "name": "milestones",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "description": "Managing milestones: create, close and assign to pull-request",
     "main": "src/index.js",
     "scripts": {
